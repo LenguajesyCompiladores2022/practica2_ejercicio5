@@ -1,1 +1,1 @@
-c=d*(e-21)/4
+actual:=promedio:=contador:= promedio/ 342 + (contador*contador);

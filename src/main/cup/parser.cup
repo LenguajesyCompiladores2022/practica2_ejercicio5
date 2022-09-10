@@ -6,34 +6,36 @@ class Parser;
 
 
 // Terminals
-terminal ASSIG;
-terminal PLUS;
-terminal SUB;
-terminal MULT;
-terminal DIV;
-terminal OPEN_BRACKET;
-terminal CLOSE_BRACKET;
-terminal INTEGER_CONSTANT;
-terminal IDENTIFIER;
+terminal	OP_ASIGNACION;
+terminal	OP_MAS;
+terminal	OP_MENOS;
+terminal	OP_MULT;
+terminal	OP_DIV;
+terminal	PUNTO_COMA;
+terminal	ID;
+terminal	CONST_INT;
+terminal	PARENTESIS_ABRE;
+terminal	PARENTESIS_CIERRA;
 
 // Non Terminals
-non terminal sentence;
-non terminal assignment;
-non terminal expression;
-non terminal term;
-non terminal factor;
+non terminal	asignacion;
+non terminal	expresion;
+non terminal	termino;
+non terminal	factor;
+non terminal	left_side;
 
 // Start Symbol Definition
-start with sentence;
+start with asignacion;
 
-sentence ::= assignment {: System.out.println("End"); :};
-assignment ::= IDENTIFIER ASSIG expression {: System.out.println("Assignment"); :};
-expression ::= expression PLUS term {: System.out.println("+"); :};
-expression ::= expression SUB term {: System.out.println("-"); :};
-expression ::= term {: System.out.println("Expression = Term"); :};
-term ::= term MULT factor {: System.out.println("*"); :};
-term ::= term DIV factor {: System.out.println("/"); :};
-term ::= factor {: System.out.println("Term = factor"); :};
-factor ::= IDENTIFIER:id  {: System.out.println("Id: " + id); :};
-factor ::= INTEGER_CONSTANT:constant {: System.out.println("Constant: " + constant ); :};
-factor ::= OPEN_BRACKET expression CLOSE_BRACKET {: System.out.println("Factor = (Expression)"); :};
+asignacion 	::=	left_side expresion PUNTO_COMA 			{: System.out.println("REGLA 1 -- left_side expresion PUNTO_COMA"); :};
+left_side	::= left_side ID:id OP_ASIGNACION:opAsig	{: System.out.println("REGLA 2 -- " + id + " " + opAsig);:};
+left_side	::= ID:id OP_ASIGNACION:opAsig				{: System.out.println("REGLA 3 -- : " + id + " " + opAsig);:};
+expresion	::=	expresion OP_MAS termino 				{: System.out.println("REGLA 4 -- expresion + termino"); :};
+expresion 	::=	expresion OP_MENOS termino 				{: System.out.println("REGLA 5 -- expresion - termino"); :};
+expresion 	::=	termino									{: System.out.println("REGLA 6 -- termino"); :};
+termino		::= termino OP_MULT factor					{: System.out.println("REGLA 7 -- termino * factor");:};
+termino		::= termino OP_DIV factor					{: System.out.println("REGLA 8 -- termino / factor");:};
+termino		::= factor									{: System.out.println("REGLA 9 -- factor");:};
+factor ::= PARENTESIS_ABRE expresion PARENTESIS_CIERRA	{: System.out.println("REGLA 10 -- factor = (expresion)"); :};
+factor ::= CONST_INT:constante 							{: System.out.println("REGLA 11 -- Constante: " + constante ); :};
+factor ::= ID:id  										{: System.out.println("REGLA 12 -- Id: " + id); :};

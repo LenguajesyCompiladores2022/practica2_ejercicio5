@@ -20,32 +20,32 @@ import static lyc.compiler.constants.Constants.*;
 
 
 %{
-  private Symbol symbol(int type) {
-    return new Symbol(type, yyline, yycolumn);
-  }
-  private Symbol symbol(int type, Object value) {
-    return new Symbol(type, yyline, yycolumn, value);
-  }
+	private Symbol symbol(int type) {
+		return new Symbol(type, yyline, yycolumn);
+	}
+	private Symbol symbol(int type, Object value) {
+		return new Symbol(type, yyline, yycolumn, value);
+	}
 %}
 
 
-LineTerminator = \r|\n|\r\n
-InputCharacter = [^\r\n]
-Identation =  [ \t\f]
+LineTerminator		=	\r|\n|\r\n
+InputCharacter		= 	[^\r\n]
+Identation			=	[ \t\f]
 
-Plus = "+"
-Mult = "*"
-Sub = "-"
-Div = "/"
-Assig = "="
-OpenBracket = "("
-CloseBracket = ")"
-Letter = [a-zA-Z]
-Digit = [0-9]
+LETRA				=   [A-Za-z]
+DIGITO				=   [0-9]
 
-WhiteSpace = {LineTerminator} | {Identation}
-Identifier = {Letter} ({Letter}|{Digit})*
-IntegerConstant = {Digit}+
+OP_MAS				=	"+"
+OP_MENOS			= 	"-"
+OP_MULT				=	"*"
+OP_DIV				=	"/"
+PUNTO_COMA			=	";"
+ID					=	{LETRA} ({LETRA}|{DIGITO})*
+CONST_INT			=	"0" | [1-9]{DIGITO}*
+PARENTESIS_ABRE		=	"("
+PARENTESIS_CIERRA	=	")"
+OP_ASIGNACION		=	":="
 
 %%
 
@@ -53,24 +53,19 @@ IntegerConstant = {Digit}+
 /* keywords */
 
 <YYINITIAL> {
-  /* identifiers */
-  {Identifier}                             { return symbol(ParserSym.IDENTIFIER, yytext()); }
-  /* Constants */
-  {IntegerConstant}                        { return symbol(ParserSym.INTEGER_CONSTANT, yytext()); }
+	{ID}				{System.out.println("Se retorna ID: \"" + yytext() + "\""); return symbol(ParserSym.ID, yytext()); }
+    {PUNTO_COMA}		{System.out.println("Se retorna PUNTO_COMA: \"" + yytext() + "\""); return symbol(ParserSym.PUNTO_COMA, yytext()); }
+    {CONST_INT}			{System.out.println("Se retorna CONST_INT: \"" + yytext() + "\""); return symbol(ParserSym.CONST_INT, yytext());}
+    {PARENTESIS_ABRE}	{System.out.println("Se retorna PARENTESIS_ABRE: \"" + yytext() + "\""); return symbol(ParserSym.PARENTESIS_ABRE, yytext());}
+    {PARENTESIS_CIERRA}	{System.out.println("Se retorna PARENTESIS_CIERRA: \"" + yytext() + "\""); return symbol(ParserSym.PARENTESIS_CIERRA, yytext());}
+    {OP_ASIGNACION}		{System.out.println("Se retorna OP_ASIGNACION: \"" + yytext() + "\""); return symbol(ParserSym.OP_ASIGNACION, yytext());}
+    {OP_MAS}			{System.out.println("Se retorna OP_MAS: \"" + yytext() + "\""); return symbol(ParserSym.OP_MAS, yytext());}
+    {OP_MENOS}			{System.out.println("Se retorna OP_MENOS: \"" + yytext() + "\""); return symbol(ParserSym.OP_MENOS, yytext());}
+    {OP_DIV}			{System.out.println("Se retorna OP_DIV: \"" + yytext() + "\""); return symbol(ParserSym.OP_DIV, yytext());}
+	{OP_MULT}			{System.out.println("Se retorna OP_MULT: \"" + yytext() + "\""); return symbol(ParserSym.OP_MULT, yytext());}
 
-  /* operators */
-  {Plus}                                    { return symbol(ParserSym.PLUS); }
-  {Sub}                                     { return symbol(ParserSym.SUB); }
-  {Mult}                                    { return symbol(ParserSym.MULT); }
-  {Div}                                     { return symbol(ParserSym.DIV); }
-  {Assig}                                   { return symbol(ParserSym.ASSIG); }
-  {OpenBracket}                             { return symbol(ParserSym.OPEN_BRACKET); }
-  {CloseBracket}                            { return symbol(ParserSym.CLOSE_BRACKET); }
-
-  /* whitespace */
-  {WhiteSpace}                   { /* ignore */ }
+	{Identation}								{ /* ignore */ }
 }
 
-
 /* error fallback */
-[^]                              { throw new UnknownCharacterException(yytext()); }
+	[^]											{ throw new UnknownCharacterException(yytext()); }

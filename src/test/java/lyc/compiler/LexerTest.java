@@ -66,17 +66,17 @@ public class LexerTest {
   @Test
   public void assignmentWithExpressions() throws Exception {
     scan("c=d*(e-21)/4");
-    assertThat(nextToken()).isEqualTo(ParserSym.IDENTIFIER);
-    assertThat(nextToken()).isEqualTo(ParserSym.ASSIG);
-    assertThat(nextToken()).isEqualTo(ParserSym.IDENTIFIER);
-    assertThat(nextToken()).isEqualTo(ParserSym.MULT);
-    assertThat(nextToken()).isEqualTo(ParserSym.OPEN_BRACKET);
-    assertThat(nextToken()).isEqualTo(ParserSym.IDENTIFIER);
-    assertThat(nextToken()).isEqualTo(ParserSym.SUB);
-    assertThat(nextToken()).isEqualTo(ParserSym.INTEGER_CONSTANT);
-    assertThat(nextToken()).isEqualTo(ParserSym.CLOSE_BRACKET);
-    assertThat(nextToken()).isEqualTo(ParserSym.DIV);
-    assertThat(nextToken()).isEqualTo(ParserSym.INTEGER_CONSTANT);
+    assertThat(nextToken()).isEqualTo(ParserSym.ID);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_ASIGNACION);
+    assertThat(nextToken()).isEqualTo(ParserSym.ID);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_MULT);
+    assertThat(nextToken()).isEqualTo(ParserSym.PARENTESIS_ABRE);
+    assertThat(nextToken()).isEqualTo(ParserSym.ID);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_MENOS);
+    assertThat(nextToken()).isEqualTo(ParserSym.CONST_INT);
+    assertThat(nextToken()).isEqualTo(ParserSym.PARENTESIS_CIERRA);
+    assertThat(nextToken()).isEqualTo(ParserSym.OP_DIV);
+    assertThat(nextToken()).isEqualTo(ParserSym.CONST_INT);
     assertThat(nextToken()).isEqualTo(ParserSym.EOF);
   }
 
